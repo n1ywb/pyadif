@@ -37,7 +37,7 @@ Exported using NA Version 10.57, conforming to ADIF specification 1.0
 def test_parse():
     flo = StringIO.StringIO(TEST_ADIF)
     reader = adif.Reader(flo)
-    i = reader.lex()
+    i = reader._lex()
     eq_(i.next(), adif.Field(name='call', type='', body='AB9RN'))
     eq_(i.next(), adif.Field(name='freq', type='', body='14.150'))
     eq_(i.next(), adif.Field(name='mode', type='', body='SSB'))
@@ -52,7 +52,7 @@ def test_parse():
 def test_iter_records():
     flo = StringIO.StringIO(TEST_ADIF)
     reader = adif.Reader(flo)
-    i = reader.iter_records()
+    i = iter(reader)
     eq_(i.next(), {'call': 'AB9RN', 'freq': '14.150', 'mode': 'SSB', 'qso_date': '20120714',
                    'time_on': '1200', 'rst_sent': '59 ', 'rst_rcvd': '59 ',
                    'comment': '08',
