@@ -163,3 +163,19 @@ class Reader(object):
                 rec[field.name] = field.body
             #print rec
 
+def format_header(header_text=' ', adif_ver=None):
+    assert header_text != ''
+    if adif_ver is None:
+        return "%s<eoh>" % header_text
+    return "%s<adif_ver:%d>%s<eoh>" % (
+            header_text, len(adif_ver), adif_ver)
+
+def format_record(record):
+    fields = []
+    for k,v in record.iteritems():
+        if k == 'app_datetime_on':
+            continue
+        fields.append("<%s:%d>%s" % (k, len(v), v))
+    fields.append('<eor>')
+    return ''.join(fields)
+
