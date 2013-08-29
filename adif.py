@@ -22,7 +22,7 @@ Python API for reading the Amateur Data Interchange Format, aka ADIF.
 ADIF version 1.0 is supported.
 """
 
-from collections import namedtuple
+from collections import namedtuple, OrderedDict
 from decimal import Decimal
 from datetime import datetime
 
@@ -136,7 +136,7 @@ class Reader(object):
 
     def iter_records(self):
         """Iterate over records in file"""
-        rec = {}
+        rec = OrderedDict()
         for field in self.lex():
             #print field
             if field.name == 'eor':
@@ -154,7 +154,7 @@ class Reader(object):
                                           int(rec['time_off'][:2]),
                                           int(rec['time_off'][2:]))
                 yield rec
-                rec = {}
+                rec = OrderedDict()
             else:
                 # TODO: type conversion and validation
                 rec[field.name] = field.body
