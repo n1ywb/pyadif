@@ -60,6 +60,7 @@ class Reader(object):
         self.adif_ver = None
         self.flo = flo
         # read header
+        flo.seek(0)
         c = flo.read(1)
         if c == '<':
             self.header_present = False
@@ -71,6 +72,7 @@ class Reader(object):
                     self.adif_ver = Decimal(field.body)
                 elif field.name == 'eoh':
                     break
+        self.bookmark = flo.tell()
 
     def _lex(self, blocksize=BLOCKSIZE):
         """Given a file like object, yield named tuple for each record."""
@@ -136,6 +138,7 @@ class Reader(object):
 
     def iter_records(self):
         """Iterate over records in file"""
+        self.flo.seek(self.bookmark)
         rec = OrderedDict()
         for field in self._lex():
             #print field
