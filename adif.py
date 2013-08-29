@@ -136,7 +136,7 @@ class Reader(object):
                 #print 'EOF'
                 break
 
-    def iter_records(self):
+    def __iter__(self):
         """Iterate over records in file"""
         self.flo.seek(self.bookmark)
         rec = OrderedDict()
