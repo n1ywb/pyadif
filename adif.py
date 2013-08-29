@@ -66,13 +66,13 @@ class Reader(object):
             flo.seek(0)
         else:
             self.header_present = True
-            for field in self.lex(blocksize=1):
+            for field in self._lex(blocksize=1):
                 if field.name == 'adif_ver':
                     self.adif_ver = Decimal(field.body)
                 elif field.name == 'eoh':
                     break
 
-    def lex(self, blocksize=BLOCKSIZE):
+    def _lex(self, blocksize=BLOCKSIZE):
         """Given a file like object, yield named tuple for each record."""
         flo = self.flo
         state = 'comment'
@@ -137,7 +137,7 @@ class Reader(object):
     def iter_records(self):
         """Iterate over records in file"""
         rec = OrderedDict()
-        for field in self.lex():
+        for field in self._lex():
             #print field
             if field.name == 'eor':
                 #print 'yield rec'
